@@ -126,9 +126,11 @@ export default {
           if (song.substring(song.indexOf('(') + 1, song.length).includes(k)) {
             key = k;
             const keyIndex = song.lastIndexOf(k);
-            if (song.length > song.substring(keyIndex + 1)) {
+            console.log(song.substring(keyIndex, keyIndex + 1));
+            if (song.length > keyIndex + 1) {
               state.suffixes.forEach(suffix => {
-                if (song.substring(keyIndex, keyIndex + 1) == suffix) {
+                console.log(song.substring(keyIndex + 1, keyIndex + 2));
+                if (song.substring(keyIndex + 1, keyIndex + 2) == suffix) {
                   key += suffix;
                 }
               });
