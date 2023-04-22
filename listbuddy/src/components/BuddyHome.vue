@@ -13,10 +13,18 @@
             placeholder="Paste song list here"
             v-model="state.rawList">
           </textarea>
-          <h3 class="execute" @click="removeArtist">
-          Remove Artists
-          </h3>
-        </div>
+          <div class="controls">
+            <div class="separator">
+              <h3 class="sep-text">Separator</h3>
+              <div class="small-btn-row">
+                <h3 class="btn square" :class ="{ selected : state.separators.includes('-'), unselected : !state.separators.includes('-') }" @click="toggleSeparator('-')">-</h3>
+                <h3 class="btn square" :class ="{ selected : state.separators.includes(','), unselected : !state.separators.includes(',')  }" @click="toggleSeparator(',')">,</h3>
+                <h3 class="btn square" :class ="{ selected : state.separators.includes('by'), unselected : !state.separators.includes('by')  }" @click="toggleSeparator('by')">by</h3>
+            </div>
+            </div>
+              <h3 id="execute" class="btn" @click="removeArtist">Remove Artists</h3>
+            </div>
+          </div>
 
         <div class="rightSide">
           <div id="song-box">
@@ -26,9 +34,6 @@
                       rows="26" 
                       v-model="songList">
             </textarea>
-            <!-- <div v-for="song in state.songArray" v-bind:key="song.name">
-              {{ song.name + song.key + song.request }}
-            </div> -->
           </div>
         </div>
       </div>
@@ -48,6 +53,7 @@ export default {
   setup() {
     let state = reactive({
       rawList: '',
+      separators: ['-'],
       songArray: [],
       keys: [ 'A', 'B' , 'C', 'D', 'E', 'F', 'G'],
       suffixes: ['#', 'b', 'm']
@@ -64,6 +70,15 @@ export default {
   });
 
 //methods
+    function toggleSeparator(sep) {
+      console.log('toggle ' + sep);
+      if (state.separators.includes(sep)) {
+        state.separators.splice(state.separators.indexOf(sep), 1);
+      } else {
+        state.separators.push(sep);
+      }
+    }
+
     async function removeArtist() {
       state.songArray = await splitLines(state.rawList);
     }
@@ -72,13 +87,17 @@ export default {
       let songArray = rawList.split(/\r\n|\r|\n/).filter(song => song != ''); 
       let objArray = [];
       for (var i = 0; i < songArray.length; i++) {
-        //let obj = {};
         let obj = await findRequest(songArray[i]);
         obj.key = await findKey(songArray[i]);
         if (obj.key != '') {
            obj.key = ' (' + obj.key + ')';
         }
-        obj.name = obj.name.substring(0, obj.name.indexOf('-')).trim();
+        state.separators.forEach(sep => { 
+          let sepIndex = obj.name.indexOf(sep);
+          if (sepIndex != -1) {
+            obj.name = obj.name.substring(0, obj.name.indexOf(sep)).trim();
+          }
+        });
         objArray.push(obj);
       }
       return objArray;
@@ -134,7 +153,8 @@ export default {
     return {
       removeArtist,
       songList,
-      state
+      state,
+      toggleSeparator
     }
   }
   
@@ -165,25 +185,19 @@ h1 {
   z-index: 1;
   position: static;
 }
+
 .leftSide {
   display:flex;
   flex-direction: column;
   align-items: center;
 }
-/* #song-box {
-  border: 1px solid black;
-  width: 350px;
-  height: 500px;
-  border-radius: 5px;
-  text-align: left;
-  padding: 5px;
-  color: black;
-} */
+
 .textbox {
   border-radius: 5px;
   padding: 5px;
   border: none;
 }
+
 .leftSide textarea::placeholder {
   font-size: 70px;
   line-height: 1.25;
@@ -203,11 +217,65 @@ h1 {
   font-family: Arial;
 }
 
-.execute {
+.selected {
+  background-color: rgb(244, 244, 202);
   border: 1px solid black;
-  border-radius: 5px;
+}
+
+.unselected {
   background-color: rgb(216, 216, 177);
+  border: none;
+}
+
+.controls {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 80px;
+  background-color: white;
+  border-radius: 5px;
+}
+
+.separator {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0px;
+  width: 50%;
+}
+
+.sep-text {
+  margin-top: 10px;
+  margin-bottom: 0px;
+  height: 10px;
+  color: 
+}
+
+.small-btn-row {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 0px;
+  padding-left: 20px;
+  padding-right: 20px;
+  width: 80%;
+}
+
+.btn {
+  border-radius: 5px;
+}
+
+.square {
+  width: 28px;
+  height: 25px;
+  padding-top: 2px;
+}
+
+#execute {
+  padding-top: 10px;
   width: 170px;
+  background-color: rgba(142, 142, 85, 0.707);
+  border: none;
+  font-size: 20px;
 }
 
 .gray {
@@ -217,7 +285,8 @@ h1 {
   background-color: rgb(255, 255, 255);
 }
 
-.execute:hover
+.btn:hover
  {
   cursor: pointer;
+  opacity: 70%;
  }</style>
