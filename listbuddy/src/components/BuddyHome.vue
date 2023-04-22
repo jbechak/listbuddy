@@ -19,10 +19,16 @@
         </div>
 
         <div class="rightSide">
-          <div id="song-box" :class="{ gray : state.songArray.length == 0, white : state.songArray.length > 0 }">
-            <div v-for="song in state.songArray" v-bind:key="song.name">
+          <div id="song-box">
+            <textarea :class="{ gray : state.songArray.length == 0, white : state.songArray.length > 0 }"
+                      class="textbox"        
+                      cols="45" 
+                      rows="26" 
+                      v-model="songList">
+            </textarea>
+            <!-- <div v-for="song in state.songArray" v-bind:key="song.name">
               {{ song.name + song.key + song.request }}
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -33,7 +39,7 @@
 </template>
 
 <script>
-import { reactive } from 'vue';
+import { reactive, computed } from 'vue';
 export default {
   name: 'HomeView',
   components: {
@@ -46,6 +52,16 @@ export default {
       keys: [ 'A', 'B' , 'C', 'D', 'E', 'F', 'G'],
       suffixes: ['#', 'b', 'm']
     });
+
+  //computed
+  let songList = computed(() => {
+    let output = '';
+    if (state.songArray.length > 0) {
+      state.songArray.forEach(song => 
+      output = output.concat(song.name + song.key + song.request + '\n'));
+    }
+    return output;
+  });
 
 //methods
     async function removeArtist() {
@@ -83,8 +99,6 @@ export default {
       return obj;
     }
 
-
-
     async function findKey(song) {
       let key = '';
       state.keys.forEach(k => {
@@ -119,6 +133,7 @@ export default {
 
     return {
       removeArtist,
+      songList,
       state
     }
   }
@@ -155,7 +170,7 @@ h1 {
   flex-direction: column;
   align-items: center;
 }
-#song-box {
+/* #song-box {
   border: 1px solid black;
   width: 350px;
   height: 500px;
@@ -163,20 +178,31 @@ h1 {
   text-align: left;
   padding: 5px;
   color: black;
-}
+} */
 .textbox {
   border-radius: 5px;
   padding: 5px;
+  border: none;
 }
-textarea::placeholder {
+.leftSide textarea::placeholder {
   font-size: 70px;
   line-height: 1.25;
   text-align: center;
   padding-top: 100px;
   padding-left: 15px;
   color: rgb(185, 185, 185);
-  
 }
+
+.rightSide textarea {
+  font-size: 15px;
+  line-height: 1.25;
+  text-align: left;
+  padding-top: 10px;
+  padding-left: 15px;
+  color: rgb(0, 0, 0);
+  font-family: Arial;
+}
+
 .execute {
   border: 1px solid black;
   border-radius: 5px;

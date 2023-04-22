@@ -1,27 +1,13 @@
 <template>
   <home-view />
-  <!-- <nav>
-    <router-link to="/index.html">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/> -->
 </template>
 
 <script>
 import HomeView from '@/views/HomeView.vue';
-// import { onMounted } from 'vue';
-// import { $router } from 'vue';
-
 export default {
   components: {
     HomeView
   },
-
-  // setup() {
-  //   onMounted(async () => {
-  //     $router.push(HomeView);
-  //   });
-  // }
 }
 
 
