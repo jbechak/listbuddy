@@ -81,6 +81,7 @@ export default {
 
     async function removeArtist() {
       state.songArray = await splitLines(state.rawList);
+      document.getElementById("song-box").scrollIntoView();
     }
 
     async function splitLines(rawList) { 
@@ -173,6 +174,7 @@ body {
 #header {
   color: rgba(255, 255, 0, 0.786);
   margin-bottom: 30px;
+  text-shadow: 2px 1px #19191970;
 }
 
 h1 {
@@ -198,6 +200,7 @@ h1 {
   border-radius: 5px;
   padding: 5px;
   border: none;
+  width: 40vw;
 }
 
 .leftSide textarea::placeholder {
@@ -292,4 +295,12 @@ h1 {
  {
   cursor: pointer;
   opacity: 70%;
- }</style>
+ }
+ 
+ @media only screen and (max-width: 599px) {
+  #main {flex-direction: column;}
+  .textbox {width: 80vw;}
+  .rightSide {margin-top: 20px;}
+ }
+ 
+ </style>
