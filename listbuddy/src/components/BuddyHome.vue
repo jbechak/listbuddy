@@ -20,11 +20,11 @@
                 <h3 class="btn square" :class ="{ selected : state.separators.includes('-'), unselected : !state.separators.includes('-') }" @click="toggleSeparator('-')">-</h3>
                 <h3 class="btn square" :class ="{ selected : state.separators.includes(','), unselected : !state.separators.includes(',')  }" @click="toggleSeparator(',')">,</h3>
                 <h3 class="btn square" :class ="{ selected : state.separators.includes('by'), unselected : !state.separators.includes('by')  }" @click="toggleSeparator('by')">by</h3>
+              </div>
             </div>
-            </div>
-              <h3 id="execute" class="btn" @click="removeArtist">Remove Artists</h3>
-            </div>
+            <h3 id="execute" class="btn" @click="removeArtist">Remove Artists</h3>
           </div>
+        </div>
 
         <div class="rightSide">
           <div id="song-box">
@@ -250,16 +250,15 @@ h1 {
   margin-top: 10px;
   margin-bottom: 0px;
   height: 10px;
-  color: 
 }
 
 .small-btn-row {
   display: flex;
   justify-content: space-evenly;
   margin-top: 0px;
-  padding-left: 20px;
+  padding-left: 30px;
   padding-right: 20px;
-  width: 80%;
+  width: 70%;
 }
 
 .btn {
@@ -278,6 +277,8 @@ h1 {
   background-color: rgba(142, 142, 85, 0.707);
   border: none;
   font-size: 20px;
+  margin-right: 30px;
+  
 }
 
 .gray {
