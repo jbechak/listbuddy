@@ -4,8 +4,8 @@
       <div id="header">
         <h1>Set List Buddy</h1>
       </div>
-      <div id="main">
-        <div class="leftSide">
+      <div id="main" :class="{ addRight : state.songArray.length > 0 }">
+        <div class="leftSide" :class="{ left : state.songArray.length > 0 }">
           <textarea name="rawList"
             class="textbox"
             cols="50" 
@@ -25,15 +25,16 @@
             <h3 id="execute" class="btn" @click="removeArtist">Remove Artists</h3>
           </div>
         </div>
-
-        <div class="rightSide">
-          <div id="song-box">
-            <textarea :class="{ gray : state.songArray.length == 0, white : state.songArray.length > 0 }"
-                      class="textbox"        
-                      cols="45" 
-                      rows="26" 
-                      v-model="songList">
-            </textarea>
+        <div id="results">
+          <div v-if="state.songArray.length > 0" class="rightSide">
+            <div id="song-box">
+              <textarea :class="{ gray : state.songArray.length == 0, white : state.songArray.length > 0 }"
+                        class="textbox"        
+                        cols="45" 
+                        rows="26" 
+                        v-model="songList">
+              </textarea>
+            </div>
           </div>
         </div>
       </div>
@@ -79,7 +80,7 @@ export default {
 
     async function removeArtist() {
       state.songArray = await splitLines(state.rawList);
-      document.getElementById("song-box").scrollIntoView();
+      document.getElementById("results").scrollIntoView();
     }
 
     async function splitLines(rawList) { 
@@ -185,16 +186,39 @@ h1 {
 }
 
 #main {
-  display: flex;
+  /* display: flex; */
   justify-content: space-evenly;
   z-index: 1;
   position: static;
+  /* justify-content: center; */
+  /* animation-name: move-left;
+  animation-duration: 4s; */
+}
+
+.addRight {
+  display: flex;
+}
+
+@keyframes move-left {
+  from {margin-left: 28vw;}
+  to {margin-left: 0vw;
+    align-items: center;
+  }
+}
+
+.left {
+  margin-left: 28vw;
+  animation-name: move-left;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
 }
 
 .leftSide {
   display:flex;
   flex-direction: column;
-  align-items: center;
+  width: 40vw;
+  /* align-items: center; */
+  margin-left: 28vw;
 }
 
 .textbox {
@@ -224,6 +248,17 @@ h1 {
   /* padding-left: 15px; */
   color: rgb(0, 0, 0);
   font-family: Arial;
+  animation: fadeIn 1s;
+  -webkit-animation: fadeIn 1s;
+  -moz-animation: fadeIn 1s;
+  -o-animation: fadeIn 1s;
+  -ms-animation: fadeIn 1s;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  10% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 .selected {
@@ -244,6 +279,7 @@ h1 {
   height: 80px;
   background-color: white;
   border-radius: 5px;
+  align-self: center;
 }
 
 .separator {
@@ -291,7 +327,7 @@ h1 {
 
 .gray {
   background-color: rgb(206, 206, 206);
-  opacity: 70%;
+  opacity: 0%;
 }
 .white {
   background-color: rgb(255, 255, 255);
@@ -304,7 +340,19 @@ h1 {
  }
  
  @media only screen and (max-width: 620px) {
-  #main {flex-direction: column;}
+  #main {
+    display: flex;
+    flex-direction: column;}
+  .leftSide {
+    align-items: center;
+    margin-left: 25vw;
+  }
+    .left {
+    margin-left: 25vw;
+    animation-name: none;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
   .textbox {width: 80vw;}
   .controls {width: 80vw;}
   .rightSide {margin-top: 20px;}
