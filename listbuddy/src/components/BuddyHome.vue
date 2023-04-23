@@ -359,7 +359,14 @@ h1 {
  {
   cursor: pointer;
   opacity: 70%;
+  animation-name: colorChange;
+  animation-duration: 10s;
  }
+
+ @keyframes colorChange {
+  from {background-color: rgb(216, 216, 177);}
+  to {background-color: rgb(129, 0, 243);}
+}
  
  @media only screen and (max-width: 620px) {
   #main {
@@ -367,17 +374,18 @@ h1 {
     flex-direction: column;}
   .leftSide {
     align-items: center;
-    margin-left: 25vw;
+    margin-left: 27vw;
   }
     .left {
-    margin-left: 25vw;
+    margin-left: 27vw;
     animation-name: none;
     animation-duration: 1s;
     animation-fill-mode: forwards;
 }
-  .textbox {width: 80vw;}
-  .controls {width: 81vw;}
-  .rightSide {margin-top: 20px;}
+  .textbox {width: 90vw;}
+  .controls {width: 91vw;}
+  .rightSide {margin-top: 20px;
+  margin-left: 1vw;}
  }
 
  </style>
