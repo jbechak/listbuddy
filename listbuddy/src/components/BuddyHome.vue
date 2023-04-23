@@ -1,9 +1,9 @@
 <template>
   <div>
     <body>
-    <div id="header">
-      <h1>Set List Buddy</h1>
-    </div>
+      <div id="header">
+        <h1>Set List Buddy</h1>
+      </div>
       <div id="main">
         <div class="leftSide">
           <textarea name="rawList"
@@ -39,8 +39,6 @@
       </div>
     </body>
   </div>
- 
-  
 </template>
 
 <script>
@@ -127,12 +125,13 @@ export default {
           if (song.substring(song.indexOf('(') + 1, song.length).includes(k)) {
             key = k;
             const keyIndex = song.lastIndexOf(k);
-            console.log(song.substring(keyIndex, keyIndex + 1));
             if (song.length > keyIndex + 1) {
               state.suffixes.forEach(suffix => {
-                console.log(song.substring(keyIndex + 1, keyIndex + 2));
                 if (song.substring(keyIndex + 1, keyIndex + 2) == suffix) {
                   key += suffix;
+                    if (suffix != 'm' && song.substring(keyIndex + 2, keyIndex + 3) == 'm') {
+                      key += 'm';
+                    }
                 }
               });
             }
@@ -173,8 +172,10 @@ body {
 
 #header {
   color: rgba(255, 255, 0, 0.786);
-  margin-bottom: 30px;
+  /* margin-bottom: 30px; */
   text-shadow: 2px 1px #19191970;
+  height: 10vh;
+  min-height: 50px;
 }
 
 h1 {
@@ -201,6 +202,9 @@ h1 {
   padding: 5px;
   border: none;
   width: 40vw;
+  height: 70vh;
+  min-height: 250px;
+  resize: none;
 }
 
 .leftSide textarea::placeholder {
@@ -217,7 +221,7 @@ h1 {
   line-height: 1.25;
   text-align: left;
   padding-top: 10px;
-  padding-left: 15px;
+  /* padding-left: 15px; */
   color: rgb(0, 0, 0);
   font-family: Arial;
 }
@@ -236,7 +240,7 @@ h1 {
   margin-top: 20px;
   display: flex;
   justify-content: space-evenly;
-  width: 100%;
+  width: 40vw;
   height: 80px;
   background-color: white;
   border-radius: 5px;
@@ -247,6 +251,7 @@ h1 {
   flex-direction: column;
   margin-top: 0px;
   width: 50%;
+  flex: 1 1 0;
 }
 
 .sep-text {
@@ -259,9 +264,9 @@ h1 {
   display: flex;
   justify-content: space-evenly;
   margin-top: 0px;
-  padding-left: 30px;
-  padding-right: 20px;
-  width: 70%;
+  padding-left: 5%;
+  padding-right: 10%;
+  width: 90%;
 }
 
 .btn {
@@ -276,16 +281,17 @@ h1 {
 
 #execute {
   padding-top: 10px;
-  width: 170px;
+  padding-bottom: 10px;
   background-color: rgba(142, 142, 85, 0.707);
   border: none;
   font-size: 20px;
-  margin-right: 30px;
-  
+  margin-right: 3%;
+  flex: 2 1 0;
 }
 
 .gray {
   background-color: rgb(206, 206, 206);
+  opacity: 70%;
 }
 .white {
   background-color: rgb(255, 255, 255);
@@ -297,10 +303,11 @@ h1 {
   opacity: 70%;
  }
  
- @media only screen and (max-width: 599px) {
+ @media only screen and (max-width: 620px) {
   #main {flex-direction: column;}
   .textbox {width: 80vw;}
+  .controls {width: 80vw;}
   .rightSide {margin-top: 20px;}
  }
- 
+
  </style>
