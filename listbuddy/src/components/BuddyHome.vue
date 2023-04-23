@@ -19,10 +19,14 @@
               <div class="small-btn-row">
                 <h3 class="btn square" :class ="{ selected : state.separators.includes('-'), unselected : !state.separators.includes('-') }" @click="toggleSeparator('-')">-</h3>
                 <h3 class="btn square" :class ="{ selected : state.separators.includes(','), unselected : !state.separators.includes(',')  }" @click="toggleSeparator(',')">,</h3>
-                <h3 class="btn square" :class ="{ selected : state.separators.includes('by'), unselected : !state.separators.includes('by')  }" @click="toggleSeparator('by')">by</h3>
+                <h3 class="btn square" :class ="{ selected : state.separators.includes(' by '), unselected : !state.separators.includes(' by ')  }" @click="toggleSeparator(' by ')">by</h3>
               </div>
             </div>
-            <h3 id="execute" class="btn" @click="removeArtist">Remove Artists</h3>
+            <div id="action-btns">
+              <h3 id="execute" class="btn" @click="removeArtist">Remove Artists</h3>
+              <h3 id="clear" class="btn" @click="state.rawList = ''">Clear Song List</h3>
+            </div>
+            
           </div>
         </div>
         <div id="results">
@@ -55,7 +59,6 @@ export default {
       separators: ['-'],
       songArray: [],
       keys: [ 'A', 'B' , 'C', 'D', 'E', 'F', 'G'],
-      suffixes: ['#', 'b', 'm'],
       suffixArrays: {
         '#' : ['#', 'sharp'],
         'b' : ['b', 'flat'],
@@ -75,7 +78,6 @@ export default {
 
 //methods
     function toggleSeparator(sep) {
-      console.log('toggle ' + sep);
       if (state.separators.includes(sep)) {
         state.separators.splice(state.separators.indexOf(sep), 1);
       } else {
@@ -179,7 +181,6 @@ body {
 
 #header {
   color: rgba(255, 255, 0, 0.786);
-  /* margin-bottom: 30px; */
   text-shadow: 2px 1px #19191970;
   height: 10vh;
   min-height: 50px;
@@ -196,9 +197,6 @@ h1 {
   justify-content: space-evenly;
   z-index: 1;
   position: static;
-  /* justify-content: center; */
-  /* animation-name: move-left;
-  animation-duration: 4s; */
 }
 
 .addRight {
@@ -223,13 +221,13 @@ h1 {
   display:flex;
   flex-direction: column;
   width: 40vw;
-  /* align-items: center; */
+  align-items: center;
   margin-left: 28vw;
 }
 
 .textbox {
   border-radius: 5px;
-  padding: 5px;
+  padding: .5vw;
   border: none;
   width: 40vw;
   height: 70vh;
@@ -251,7 +249,6 @@ h1 {
   line-height: 1.25;
   text-align: left;
   padding-top: 10px;
-  /* padding-left: 15px; */
   color: rgb(0, 0, 0);
   font-family: Arial;
   animation: fadeIn 1s;
@@ -281,8 +278,8 @@ h1 {
   margin-top: 20px;
   display: flex;
   justify-content: space-evenly;
-  width: 40vw;
-  height: 80px;
+  width: 41vw;
+  height: 81px;
   background-color: white;
   border-radius: 5px;
   align-self: center;
@@ -321,14 +318,33 @@ h1 {
   padding-top: 2px;
 }
 
+#action-btns {
+  flex: 2 1 0;
+  display: flex;
+  flex-direction: column;
+  height: 5vh;
+  margin-right: 3%;
+}
+
 #execute {
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 7px;
+  padding-bottom: 7px;
   background-color: rgba(142, 142, 85, 0.707);
   border: none;
   font-size: 20px;
-  margin-right: 3%;
-  flex: 2 1 0;
+  margin-top: 5px;
+  margin-bottom: 6px;
+}
+
+#clear {
+  margin-top: 0px;
+  align-self: flex-start;
+  background-color: rgb(216, 216, 177);
+  border: none;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 7px;
+  padding-right: 7px;
 }
 
 .gray {
@@ -360,7 +376,7 @@ h1 {
     animation-fill-mode: forwards;
 }
   .textbox {width: 80vw;}
-  .controls {width: 80vw;}
+  .controls {width: 81vw;}
   .rightSide {margin-top: 20px;}
  }
 
