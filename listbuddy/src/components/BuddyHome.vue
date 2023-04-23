@@ -2,7 +2,7 @@
   <div>
     <body>
       <div id="header">
-        <h1>Set List Buddy</h1>
+        <h1>List Buddy</h1>
       </div>
       <div id="main" :class="{ addRight : state.songArray.length > 0 }">
         <div class="leftSide" :class="{ left : state.songArray.length > 0 }">
