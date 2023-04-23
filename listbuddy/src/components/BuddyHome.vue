@@ -381,11 +381,12 @@ h1 {
     animation-name: none;
     animation-duration: 1s;
     animation-fill-mode: forwards;
-}
+  }
+  .btn:hover {animation-name: none;}
   .textbox {width: 90vw;}
   .controls {width: 91vw;}
   .rightSide {margin-top: 20px;
-  margin-left: 1vw;}
+    margin-left: 1vw;}
  }
 
  </style>
