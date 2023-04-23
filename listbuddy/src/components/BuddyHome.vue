@@ -55,7 +55,12 @@ export default {
       separators: ['-'],
       songArray: [],
       keys: [ 'A', 'B' , 'C', 'D', 'E', 'F', 'G'],
-      suffixes: ['#', 'b', 'm']
+      suffixes: ['#', 'b', 'm'],
+      suffixArrays: {
+        '#' : ['#', 'sharp'],
+        'b' : ['b', 'flat'],
+        'm' : ['m']
+      }
     });
 
   //computed
@@ -88,19 +93,25 @@ export default {
       let objArray = [];
       for (var i = 0; i < songArray.length; i++) {
         let obj = await findRequest(songArray[i]);
-        obj.key = await findKey(songArray[i]);
+        obj = await findName(obj);
+        obj.key = obj.key ? await findKey(obj.key) : '';
         if (obj.key != '') {
            obj.key = ' (' + obj.key + ')';
         }
-        state.separators.forEach(sep => { 
-          let sepIndex = obj.name.indexOf(sep);
-          if (sepIndex != -1) {
-            obj.name = obj.name.substring(0, obj.name.indexOf(sep)).trim();
-          }
-        });
         objArray.push(obj);
       }
       return objArray;
+    }
+
+    async function findName(obj) {
+      state.separators.forEach(sep => { 
+        let sepIndex = obj.name.indexOf(sep);
+        if (sepIndex != -1) {
+          obj.key = obj.name.substring(obj.name.indexOf(sep) + 1, obj.name.length);
+          obj.name = obj.name.substring(0, obj.name.indexOf(sep)).trim();
+        }
+      });
+      return obj;
     }
 
     async function findRequest(song) {
@@ -118,39 +129,34 @@ export default {
       return obj;
     }
 
-    async function findKey(song) {
-      let key = '';
+    async function findKey(str) {
+      let songKey = '';
       state.keys.forEach(k => {
-      if (song.indexOf('(') > -1) {
-        
-          if (song.substring(song.indexOf('(') + 1, song.length).includes(k)) {
-            key = k;
-            const keyIndex = song.lastIndexOf(k);
-            if (song.length > keyIndex + 1) {
-              state.suffixes.forEach(suffix => {
-                if (song.substring(keyIndex + 1, keyIndex + 2) == suffix) {
-                  key += suffix;
-                    if (suffix != 'm' && song.substring(keyIndex + 2, keyIndex + 3) == 'm') {
-                      key += 'm';
-                    }
-                }
-              });
-            }
-          }
-        } else {
-          if (song.substring(song.length - 1, song.length) == k) {
-            key = k;
-          } else {
-            state.suffixes.forEach(suffix => {
-              if (song.substring(song.length - 2, song.length) == k + suffix) {
-                key = k + suffix;
-              }
-            });
-          } 
-        }
+        if ((str.indexOf('(') > -1 && str.substring(str.indexOf('(') + 1, str.length).includes(k)) 
+        || (str.substring(str.length - 2, str.length).includes(k))) {
+          songKey = k;
+          const keyIndex = str.lastIndexOf(k);
+          songKey = getSuffix(str, keyIndex, songKey);
+        } 
       });
-      
-      return key;
+      return songKey;
+    }
+
+    function getSuffix(str, keyIndex, songKey) {
+      if (str.length > keyIndex + 1) {
+        for (const [key, value] of Object.entries(state.suffixArrays)) {
+          value.forEach(suffix => {
+            if (!songKey.includes(suffix) && str.substring(keyIndex + 1, keyIndex + 2 + suffix.length).includes(suffix)) {
+              songKey += key;
+              if (suffix != 'm' && !songKey.includes('m') 
+              && str.substring(keyIndex + 1 + suffix.length, keyIndex + 4 + suffix.length).includes('m')) {
+                songKey += 'm';
+              }
+            }
+          });
+        }
+      }
+      return songKey;
     }
 
     return {
